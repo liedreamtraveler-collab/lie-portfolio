@@ -178,4 +178,67 @@ function renderSchedule(items){
   // 動きを減らすONでも1フレーム描画して静止表示
   if (!prefersReduced) requestAnimationFrame(step);
   else step();
+
+  // ===== Google Calendar fetch (public calendar + API key) =====
+async function fetchGCalEvents({ calendarId, apiKey, maxResults = 15 }) {
+  const timeMin = new Date().toISOString(); // 今以降
+  const params = new URLSearchParams({
+    key: apiKey,
+    timeMin,
+    maxResults: String(maxResults),
+    singleEvents: 'true',
+    orderBy: 'startTime'
+  });
+  const url = `https://www.googleapis.com/calendar/v3/calendars/${encodeURIComponent(calendarId)}/events?${params}`;
+  const res = await fetch(url);
+  if (!res.ok) throw new Error('Failed to fetch Google Calendar: ' + res.status);
+  const data = await res.json();
+
+  const fmt = (iso) => {
+    const d = new Date(iso);
+    return d.toLocaleString('ja-JP', {
+      timeZone: 'Asia/Tokyo',
+      month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit'
+    });
+  };
+
+  return (data.items || []).map(ev => {
+    const startIso = ev.start.dateTime || (ev.start.date + 'T00:00:00Z'); // 終日対応
+    const when = ev.start.date ? fmt(ev.start.date + 'T00:00:00Z').slice(0,5) : fmt(startIso);
+    return {
+      when,
+      title: ev.summary || '(無題)',
+      link: ev.htmlLink || ''
+    };
+  });
+}
+
+async function renderGCalToCards({ calendarId, apiKey }){
+  const root = document.getElementById('scheduleList');
+  if (!root) return;
+  try{
+    const items = await fetchGCalEvents({ calendarId, apiKey, maxResults: 20 });
+    if (items.length === 0) {
+      root.innerHTML = `<li class="card"><p>直近の予定はありません。</p></li>`;
+      return;
+    }
+    root.innerHTML = items.map(it => `
+      <li class="card">
+        <time style="color:var(--gold);font-weight:600;">${it.when}</time>
+        <h3 style="margin:6px 0 8px;">${it.title}</h3>
+        ${it.link ? `<a class="btn" href="${it.link}" target="_blank" rel="noopener">Googleカレンダーで開く</a>` : ''}
+      </li>
+    `).join('');
+  }catch(e){
+    console.error(e);
+    root.innerHTML = `<li class="card"><p class="muted">スケジュールを読み込めませんでした。</p></li>`;
+  }
+}
+
+// ★あなたの値を入れて呼び出す（公開カレンダー前提）
+renderGCalToCards({
+  calendarId: 'ここにCalendar ID（xxxxx@group.calendar.google.com）',
+  apiKey: 'ここにAPIキー（AIzaSy...）'
+});
+
 })();
