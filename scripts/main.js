@@ -237,8 +237,8 @@ async function renderGCalToCards({ calendarId, apiKey }){
 
 // ★あなたの値を入れて呼び出す（公開カレンダー前提）
 renderGCalToCards({
-  calendarId: 'ここにCalendar ID（xxxxx@group.calendar.google.com）',
-  apiKey: 'ここにAPIキー（AIzaSy...）'
+  calendarId: 'lie.dreamtraveler@gmail.com',
+  apiKey: 'AIzaSyB1_znRIwBQBfsUE82Eg7Ez1ovLEwm-fxQ'
 });
 
 })();
