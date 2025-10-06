@@ -1,0 +1,67 @@
+{
+  "news": [
+    {
+      "date": "2025-10-06",
+      "title": "サイトを公開しました",
+      "text": "GitHub Pagesで個人サイトを公開。今後、楽曲と短編を順次追加します。",
+      "link": ""
+    },
+    {
+      "date": "2025-10-10",
+      "title": "新曲『Veilwalker』予告",
+      "text": "仮面をテーマにしたオリジナル曲。MVは来週公開予定。",
+      "link": "https://www.youtube.com/"
+    }
+  ],
+  "music": [
+    {
+      "title": "Veilwalker (Teaser)",
+      "meta": "Original / 0:30",
+      "text": "赤い残響と夜の街。仮面の向こう側へ。",
+      "thumb": "assets/music-thumb-1.jpg",
+      "audio": "assets/veilwalker_teaser.mp3",
+      "link": "https://www.youtube.com/"
+    },
+    {
+      "title": "カバー：夜行列車",
+      "meta": "Cover / 3:42",
+      "text": "夢のプラットフォームで待ち合わせ。",
+      "thumb": "assets/music-thumb-2.jpg",
+      "audio": "",
+      "link": "https://x.com/"
+    }
+  ],
+  "novels": [
+    {
+      "title": "短編：音に生き、物語に還る",
+      "meta": "2,800字 / 連載入口",
+      "text": "歌の旅路を綴る序章。",
+      "thumb": "assets/novel-thumb-1.jpg",
+      "link": "https://username.fanbox.cc/posts/1234567"
+    },
+    {
+      "title": "世界観ノーツ：C.A.R.M.I.N.A.",
+      "meta": "設定資料抜粋",
+      "text": "舞台装置とシンボル群の試案。",
+      "thumb": "assets/novel-thumb-2.jpg",
+      "link": "https://username.booth.pm/items/1234567"
+    }
+  ],
+  "schedule": [
+    {
+      "date": "2025-10-15",
+      "title": "YouTube プレミア公開（Veilwalker）",
+      "link": "https://www.youtube.com/"
+    },
+    {
+      "date": "2025-11-01",
+      "title": "短編公開（FANBOX）",
+      "link": "https://username.fanbox.cc/"
+    },
+    {
+      "date": "2025-11-06",
+      "title": "受注〆切（BOOTH/BASE グッズ）",
+      "link": "https://username.booth.pm/"
+    }
+  ]
+}

@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Lie | Singer-Writer / 小説家</title>
+  <meta name="description" content="歌と物語で世界を旅する — Singer-Writer & Novelist">
+  <meta property="og:title" content="Lie | Singer-Writer / 小説家">
+  <meta property="og:description" content="歌と物語で世界を旅する — Singer-Writer & Novelist">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="assets/og-image.png">
+  <meta property="og:url" content="">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;600;700&family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles/style.css">
+  <script defer src="scripts/main.js"></script>
+</head>
+<body>
+  <header class="site-header">
+    <a class="logo" href="#"><span class="mark">Λ</span> Lie</a>
+    <nav class="nav" aria-label="主なナビゲーション">
+      <button id="navToggle" class="nav-toggle" aria-expanded="false" aria-controls="navMenu">Menu</button>
+      <ul id="navMenu" class="nav-list">
+        <li><a href="#news">News</a></li>
+        <li><a href="#music">Music</a></li>
+        <li><a href="#novels">Novels</a></li>
+        <li><a href="#schedule">Schedule</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#contact">Contact</a></li>
+        <li><button id="themeToggle" class="theme-toggle" title="テーマ切替" aria-label="テーマ切替">🌓</button></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <!-- Hero -->
+    <section class="hero" id="top">
+      <div class="hero-inner">
+        <h1 class="hero-title">音に生き、物語に還る。</h1>
+        <p class="hero-copy">Singer-Writer “Lie” / 個人歌い手 & 小説家</p>
+        <div class="hero-ctas">
+          <a class="btn primary" href="#music">最新曲を聴く</a>
+          <a class="btn ghost" href="#novels">物語を読む</a>
+        </div>
+      </div>
+      <div class="hero-bg" aria-hidden="true"></div>
+    </section>
+
+    <!-- News -->
+    <section id="news" class="section">
+      <div class="section-head">
+        <h2>News</h2>
+        <p class="section-desc">お知らせ・新着情報</p>
+      </div>
+      <ul id="newsList" class="cards"></ul>
+    </section>
+
+    <!-- Music -->
+    <section id="music" class="section">
+      <div class="section-head">
+        <h2>Music</h2>
+        <p class="section-desc">歌ってみた・オリジナル曲</p>
+      </div>
+      <div id="musicGrid" class="grid"></div>
+      <div class="section-cta">
+        <a class="btn" href="https://www.youtube.com/" target="_blank" rel="noopener">YouTubeへ</a>
+        <a class="btn" href="https://x.com/" target="_blank" rel="noopener">X で告知を見る</a>
+      </div>
+    </section>
+
+    <!-- Novels -->
+    <section id="novels" class="section">
+      <div class="section-head">
+        <h2>Novels</h2>
+        <p class="section-desc">短編／連載／世界観ノーツ</p>
+      </div>
+      <div id="novelGrid" class="grid"></div>
+      <div class="section-cta">
+        <a class="btn" href="https://username.fanbox.cc/" target="_blank" rel="noopener">FANBOXで読む</a>
+        <a class="btn" href="https://username.booth.pm/" target="_blank" rel="noopener">BOOTHで頒布</a>
+      </div>
+    </section>
+
+    <!-- Schedule -->
+    <section id="schedule" class="section">
+      <div class="section-head">
+        <h2>Schedule</h2>
+        <p class="section-desc">出演・配信・発売予定</p>
+      </div>
+      <table id="scheduleTable" class="table">
+        <thead><tr><th>日付</th><th>内容</th><th>リンク</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </section>
+
+    <!-- Social / Links -->
+    <section id="links" class="section">
+      <div class="section-head">
+        <h2>Links</h2>
+        <p class="section-desc">活動プラットフォーム</p>
+      </div>
+      <div class="links">
+        <a class="link-card" href="https://x.com/your_id" target="_blank" rel="noopener">X（旧Twitter）</a>
+        <a class="link-card" href="https://www.youtube.com/@your_id" target="_blank" rel="noopener">YouTube</a>
+        <a class="link-card" href="https://username.fanbox.cc/" target="_blank" rel="noopener">pixivFANBOX</a>
+        <a class="link-card" href="https://username.booth.pm/" target="_blank" rel="noopener">BOOTH</a>
+        <a class="link-card" href="https://shop.example.com" target="_blank" rel="noopener">BASE</a>
+      </div>
+    </section>
+
+    <!-- About -->
+    <section id="about" class="section">
+      <div class="section-head">
+        <h2>About</h2>
+        <p class="section-desc">プロフィール・ステートメント</p>
+      </div>
+      <div class="about-wrap">
+        <img class="about-avatar" src="assets/avatar.png" alt="Lieのアバター" onerror="this.style.display='none'">
+        <div>
+          <h3>Lie（ライ）</h3>
+          <p>歌の中を旅して、その旅の記憶を小説にする“歌い手 × 作家”。夢の世界で拾った欠片を、音と文字で編み直す。<br>タグ：#音に生き物語に還る</p>
+          <ul class="about-list">
+            <li>拠点：Tokyo</li>
+            <li>ジャンル：ポップ／アンビエント／近未来ファンタジー</li>
+            <li>好き：仮面モチーフ・赤系の差し色・夜景</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact -->
+    <section id="contact" class="section">
+      <div class="section-head">
+        <h2>Contact</h2>
+        <p class="section-desc">お仕事のご依頼・感想はこちらへ</p>
+      </div>
+      <form id="contactForm" class="contact-form" netlify>
+        <input type="hidden" name="form-name" value="contact">
+        <div class="form-row">
+          <label>お名前<input name="name" type="text" required></label>
+          <label>メール<input name="email" type="email" required></label>
+        </div>
+        <label>件名<input name="subject" type="text" required></label>
+        <label>本文<textarea name="message" rows="5" required></textarea></label>
+        <button class="btn primary" type="submit">送信</button>
+        <p class="muted">※ Netlify Forms等の静的フォームサービスで動作します。</p>
+      </form>
+    </section>
+
+    <!-- Embed (X) -->
+    <section id="embed" class="section">
+      <div class="section-head">
+        <h2>Latest on X</h2>
+        <p class="section-desc">固定ポストを埋め込み</p>
+      </div>
+      <blockquote class="twitter-tweet">
+        <p lang="ja" dir="ltr">最新情報はXでチェック！</p>&mdash; Lie (@your_id) 
+        <a href="https://x.com/your_id/status/1234567890123456789">リンク</a>
+      </blockquote>
+      <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p>© <span id="year"></span> Lie — Singer-Writer / Novelist</p>
+  </footer>
+
+  <!-- JSON-LD -->
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org",
+    "@type":"Person",
+    "name":"Lie",
+    "url":"",
+    "sameAs":[
+      "https://x.com/your_id",
+      "https://www.youtube.com/@your_id",
+      "https://username.fanbox.cc/",
+      "https://username.booth.pm/"
+    ],
+    "jobTitle":"Singer-Writer / Novelist",
+    "image":"assets/avatar.png"
+  }
+  </script>
+</body>
+</html>
