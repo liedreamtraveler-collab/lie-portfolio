@@ -241,4 +241,29 @@ renderGCalToCards({
   apiKey: 'AIzaSyB1_znRIwBQBfsUE82Eg7Ez1ovLEwm-fxQ'
 });
 
+// ===== Portal Entrance controller =====
+(() => {
+  const portal = document.getElementById('portal');
+  if (!portal) return;
+
+  // OS設定で動きを減らす人にはスキップ
+  const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (prefersReduced) { portal.remove(); return; }
+
+  // 1) 扉を開く
+  document.documentElement.classList.add('portal-zoom');
+  portal.classList.add('open');
+
+  // 2) ちょいズームして “吸い込まれ感”
+  setTimeout(() => {
+    document.documentElement.classList.add('zooming');
+  }, 900);
+
+  // 3) 1.9秒後にフェードアウトして削除
+  setTimeout(() => {
+    portal.classList.add('hide');
+    document.documentElement.classList.remove('zooming','portal-zoom');
+    setTimeout(()=> portal.remove(), 700);
+  }, 1900);
+
 })();
