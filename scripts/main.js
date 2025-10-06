@@ -19,7 +19,8 @@ if (themeToggle){
 }
 
 // Footer year
-document.getElementById('year').textContent = new Date().getFullYear();
+const yearEl = document.getElementById('year');
+if (yearEl) yearEl.textContent = new Date().getFullYear();
 
 // Fetch and render data
 async function loadJSON(path){
@@ -30,6 +31,7 @@ async function loadJSON(path){
 
 function renderNews(items){
   const root = document.getElementById('newsList');
+  if (!root) return;
   root.innerHTML = items.map(it => `
     <li class="card">
       <time datetime="${it.date}">${it.date}</time>
@@ -42,6 +44,7 @@ function renderNews(items){
 
 function renderTiles(items, rootId){
   const root = document.getElementById(rootId);
+  if (!root) return;
   root.innerHTML = items.map(it => `
     <article class="tile">
       <img class="thumb" src="${it.thumb}" alt="${it.title}" onerror="this.style.display='none'">
@@ -60,6 +63,7 @@ function renderTiles(items, rootId){
 
 function renderSchedule(items){
   const tbody = document.querySelector('#scheduleTable tbody');
+  if (!tbody) return;
   tbody.innerHTML = items.map(it => `
     <tr>
       <td><time datetime="${it.date}">${it.date}</time></td>
@@ -72,13 +76,16 @@ function renderSchedule(items){
 (async () => {
   try{
     const data = await loadJSON('data/works.json');
-    renderNews(data.news);
-    renderTiles(data.music, 'musicGrid');
-    renderTiles(data.novels, 'novelGrid');
-    renderSchedule(data.schedule);
+    renderNews(data.news || []);
+    renderTiles(data.music || [], 'musicGrid');
+    renderTiles(data.novels || [], 'novelGrid');
+    renderSchedule(data.schedule || []);
   }catch(e){
-    console.error(e);
+    // 初回はJSON未配置でもサイトが落ちないよう抑止
+    console.warn(e);
   }
+})();
+
 // ===== Golden Stardust Particles =====
 (() => {
   const canvas = document.getElementById('stardust');
@@ -86,7 +93,7 @@ function renderSchedule(items){
 
   const ctx = canvas.getContext('2d', { alpha: true });
   let w, h, dpr, particles = [];
-  const MAX = 120; // 粒子数（PC想定）。重ければ80へ
+  const MAX = 120; // 粒子数
   const GOLD = '#D0A900';
 
   const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -105,11 +112,11 @@ function renderSchedule(items){
     return {
       x: rand(0, w),
       y: rand(0, h),
-      r: rand(0.6, 1.8),    // 半径
+      r: rand(0.6, 1.8),
       vx: rand(-0.08, 0.08),
       vy: rand(-0.12, 0.02),
-      a: rand(0.25, 0.7),   // 透明度
-      tw: rand(1.2, 2.4),   // 点滅速度
+      a: rand(0.25, 0.7),
+      tw: rand(1.2, 2.4),
       t: Math.random()*Math.PI*2
     };
   }
@@ -120,10 +127,10 @@ function renderSchedule(items){
     for (let i=0;i<count;i++) particles.push(spawnParticle());
   }
 
-  function step(t){
+  function step(){
     ctx.clearRect(0,0,w,h);
 
-    // 背景にごく薄い赤のベール（深み）
+    // 背景にごく薄い赤〜金のグラデ
     const grd = ctx.createLinearGradient(0,0,w,h);
     grd.addColorStop(0,'rgba(134,32,64,0.06)');
     grd.addColorStop(1,'rgba(208,169,0,0.04)');
@@ -135,15 +142,15 @@ function renderSchedule(items){
       p.y += p.vy;
       p.t += 0.02 * p.tw;
 
-      // 端に行ったら巻き戻し
+      // ラップ
       if (p.x < -10) p.x = w+10; else if (p.x > w+10) p.x = -10;
       if (p.y < -10) p.y = h+10; else if (p.y > h+10) p.y = -10;
 
-      // 点滅（きらめき）
+      // きらめき
       const flicker = 0.6 + 0.4 * Math.abs(Math.sin(p.t));
       ctx.globalAlpha = p.a * flicker;
 
-      // グローっぽい円
+      // グロー
       const g = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.r*6);
       g.addColorStop(0, GOLD);
       g.addColorStop(1, 'rgba(208,169,0,0)');
@@ -152,7 +159,7 @@ function renderSchedule(items){
       ctx.arc(p.x, p.y, p.r*6, 0, Math.PI*2);
       ctx.fill();
 
-      // 中心に小さなコア
+      // コア
       ctx.globalAlpha = Math.min(1, p.a + 0.15);
       ctx.fillStyle = GOLD;
       ctx.beginPath();
@@ -164,9 +171,11 @@ function renderSchedule(items){
     if (!prefersReduced) requestAnimationFrame(step);
   }
 
-  const onResize = () => { resize(); init(); };
+  function onResize(){ resize(); init(); if (prefersReduced) { ctx.clearRect(0,0,w,h); step(); } }
+
   window.addEventListener('resize', onResize);
   resize(); init();
+  // 動きを減らすONでも1フレーム描画して静止表示
   if (!prefersReduced) requestAnimationFrame(step);
-
+  else step();
 })();
