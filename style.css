@@ -1,0 +1,29 @@
+:root {
+  --bg: #000000;      /* 背景 黒 */
+  --fg: #DBDBDB;      /* 文字色 銀 */
+  --muted: #A8A8A8;   /* サブ文字（やや暗めの銀） */
+  --accent: #862040;  /* ワインレッド */
+  --gold: #D0A900;    /* 金 */
+  --card: #111111;    /* コンテンツ背景（黒に近いグレー） */
+  --line: #2B2B2B;    /* 枠線色（ややグレー） */
+}
+
+/* ボタンや装飾部分で金色を使う例 */
+.btn.primary {
+  background: var(--accent);
+  border-color: transparent;
+  color: white;
+}
+
+.btn.primary:hover {
+  background: var(--gold);
+  color: #000;
+  transition: 0.3s;
+}
+
+/* 見出しやラインに金の装飾 */
+.section-head h2 {
+  border-bottom: 2px solid var(--gold);
+  padding-bottom: 6px;
+  display: inline-block;
+}
