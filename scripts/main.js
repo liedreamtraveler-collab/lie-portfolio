@@ -1,35 +1,38 @@
-// Main interactions and data rendering
+// ================================
+// lie-portfolio main.js 完全版
+// ================================
 
-// Mobile nav
+// ===== Mobile nav =====
 const navToggle = document.getElementById('navToggle');
 const navMenu = document.getElementById('navMenu');
-if (navToggle && navMenu){
-  navToggle.addEventListener('click', ()=>{
+if (navToggle && navMenu) {
+  navToggle.addEventListener('click', () => {
     const open = navMenu.classList.toggle('open');
     navToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
   });
 }
 
-// Theme toggle
+// ===== Theme toggle =====
 const themeToggle = document.getElementById('themeToggle');
-if (themeToggle){
-  themeToggle.addEventListener('click', ()=>{
+if (themeToggle) {
+  themeToggle.addEventListener('click', () => {
     document.documentElement.classList.toggle('light');
   });
 }
 
-// Footer year
+// ===== Footer year =====
 const yearEl = document.getElementById('year');
 if (yearEl) yearEl.textContent = new Date().getFullYear();
 
-// Fetch and render data
-async function loadJSON(path){
+// ===== Local JSON loader =====
+async function loadJSON(path) {
   const res = await fetch(path);
-  if (!res.ok) throw new Error('Failed to load '+path);
+  if (!res.ok) throw new Error('Failed to load ' + path);
   return await res.json();
 }
 
-function renderNews(items){
+// ===== Content rendering =====
+function renderNews(items) {
   const root = document.getElementById('newsList');
   if (!root) return;
   root.innerHTML = items.map(it => `
@@ -42,7 +45,7 @@ function renderNews(items){
   `).join('');
 }
 
-function renderTiles(items, rootId){
+function renderTiles(items, rootId) {
   const root = document.getElementById(rootId);
   if (!root) return;
   root.innerHTML = items.map(it => `
@@ -61,7 +64,7 @@ function renderTiles(items, rootId){
   `).join('');
 }
 
-function renderSchedule(items){
+function renderSchedule(items) {
   const tbody = document.querySelector('#scheduleTable tbody');
   if (!tbody) return;
   tbody.innerHTML = items.map(it => `
@@ -73,15 +76,15 @@ function renderSchedule(items){
   `).join('');
 }
 
+// ===== Load JSON data (local works.json) =====
 (async () => {
-  try{
+  try {
     const data = await loadJSON('data/works.json');
     renderNews(data.news || []);
     renderTiles(data.music || [], 'musicGrid');
     renderTiles(data.novels || [], 'novelGrid');
     renderSchedule(data.schedule || []);
-  }catch(e){
-    // 初回はJSON未配置でもサイトが落ちないよう抑止
+  } catch (e) {
     console.warn(e);
   }
 })();
@@ -93,22 +96,22 @@ function renderSchedule(items){
 
   const ctx = canvas.getContext('2d', { alpha: true });
   let w, h, dpr, particles = [];
-  const MAX = 120; // 粒子数
+  const MAX = 120;
   const GOLD = '#D0A900';
-
   const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  function resize(){
+  function resize() {
     dpr = Math.min(window.devicePixelRatio || 1, 2);
-    w = canvas.clientWidth; h = canvas.clientHeight;
+    w = canvas.clientWidth;
+    h = canvas.clientHeight;
     canvas.width = Math.floor(w * dpr);
     canvas.height = Math.floor(h * dpr);
-    ctx.setTransform(dpr,0,0,dpr,0,0);
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
   }
 
-  function rand(min, max){ return Math.random()*(max-min)+min; }
+  function rand(min, max) { return Math.random() * (max - min) + min; }
 
-  function spawnParticle(){
+  function spawnParticle() {
     return {
       x: rand(0, w),
       y: rand(0, h),
@@ -117,106 +120,89 @@ function renderSchedule(items){
       vy: rand(-0.12, 0.02),
       a: rand(0.25, 0.7),
       tw: rand(1.2, 2.4),
-      t: Math.random()*Math.PI*2
+      t: Math.random() * Math.PI * 2
     };
   }
 
-  function init(){
+  function init() {
     particles = [];
-    const count = prefersReduced ? Math.floor(MAX*0.35) : MAX;
-    for (let i=0;i<count;i++) particles.push(spawnParticle());
+    const count = prefersReduced ? Math.floor(MAX * 0.35) : MAX;
+    for (let i = 0; i < count; i++) particles.push(spawnParticle());
   }
 
-  function step(){
-    ctx.clearRect(0,0,w,h);
+  function step() {
+    ctx.clearRect(0, 0, w, h);
 
-    // 背景にごく薄い赤〜金のグラデ
-    const grd = ctx.createLinearGradient(0,0,w,h);
-    grd.addColorStop(0,'rgba(134,32,64,0.06)');
-    grd.addColorStop(1,'rgba(208,169,0,0.04)');
+    const grd = ctx.createLinearGradient(0, 0, w, h);
+    grd.addColorStop(0, 'rgba(134,32,64,0.06)');
+    grd.addColorStop(1, 'rgba(208,169,0,0.04)');
     ctx.fillStyle = grd;
-    ctx.fillRect(0,0,w,h);
+    ctx.fillRect(0, 0, w, h);
 
-    for (const p of particles){
+    for (const p of particles) {
       p.x += p.vx;
       p.y += p.vy;
       p.t += 0.02 * p.tw;
+      if (p.x < -10) p.x = w + 10; else if (p.x > w + 10) p.x = -10;
+      if (p.y < -10) p.y = h + 10; else if (p.y > h + 10) p.y = -10;
 
-      // ラップ
-      if (p.x < -10) p.x = w+10; else if (p.x > w+10) p.x = -10;
-      if (p.y < -10) p.y = h+10; else if (p.y > h+10) p.y = -10;
-
-      // きらめき
       const flicker = 0.6 + 0.4 * Math.abs(Math.sin(p.t));
       ctx.globalAlpha = p.a * flicker;
 
-      // グロー
-      const g = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.r*6);
+      const g = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.r * 6);
       g.addColorStop(0, GOLD);
       g.addColorStop(1, 'rgba(208,169,0,0)');
       ctx.fillStyle = g;
       ctx.beginPath();
-      ctx.arc(p.x, p.y, p.r*6, 0, Math.PI*2);
+      ctx.arc(p.x, p.y, p.r * 6, 0, Math.PI * 2);
       ctx.fill();
 
-      // コア
       ctx.globalAlpha = Math.min(1, p.a + 0.15);
       ctx.fillStyle = GOLD;
       ctx.beginPath();
-      ctx.arc(p.x, p.y, p.r, 0, Math.PI*2);
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
       ctx.fill();
-
       ctx.globalAlpha = 1;
     }
     if (!prefersReduced) requestAnimationFrame(step);
   }
 
-  function onResize(){ resize(); init(); if (prefersReduced) { ctx.clearRect(0,0,w,h); step(); } }
+  function onResize() { resize(); init(); if (prefersReduced) step(); }
 
   window.addEventListener('resize', onResize);
   resize(); init();
-  // 動きを減らすONでも1フレーム描画して静止表示
   if (!prefersReduced) requestAnimationFrame(step);
   else step();
+})(); // 粒子IIFE終了
 
-  // ===== Google Calendar fetch (public calendar + API key) =====
+// ===== Google Calendar fetch (public calendar + API key) =====
 async function fetchGCalEvents({ calendarId, apiKey, maxResults = 15 }) {
-  const timeMin = new Date().toISOString(); // 今以降
+  const timeMin = new Date().toISOString();
   const params = new URLSearchParams({
-    key: apiKey,
-    timeMin,
-    maxResults: String(maxResults),
-    singleEvents: 'true',
-    orderBy: 'startTime'
+    key: apiKey, timeMin, maxResults: String(maxResults),
+    singleEvents: 'true', orderBy: 'startTime'
   });
   const url = `https://www.googleapis.com/calendar/v3/calendars/${encodeURIComponent(calendarId)}/events?${params}`;
   const res = await fetch(url);
   if (!res.ok) throw new Error('Failed to fetch Google Calendar: ' + res.status);
   const data = await res.json();
 
-  const fmt = (iso) => {
-    const d = new Date(iso);
-    return d.toLocaleString('ja-JP', {
-      timeZone: 'Asia/Tokyo',
-      month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit'
-    });
-  };
+  const fmt = iso => new Date(iso).toLocaleString('ja-JP', {
+    timeZone: 'Asia/Tokyo',
+    month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit'
+  });
 
   return (data.items || []).map(ev => {
-    const startIso = ev.start.dateTime || (ev.start.date + 'T00:00:00Z'); // 終日対応
-    const when = ev.start.date ? fmt(ev.start.date + 'T00:00:00Z').slice(0,5) : fmt(startIso);
-    return {
-      when,
-      title: ev.summary || '(無題)',
-      link: ev.htmlLink || ''
-    };
+    const startIso = ev.start.dateTime || (ev.start.date + 'T00:00:00Z');
+    const when = ev.start.date ? fmt(ev.start.date + 'T00:00:00Z').slice(0, 5) : fmt(startIso);
+    return { when, title: ev.summary || '(無題)', link: ev.htmlLink || '' };
   });
 }
 
-async function renderGCalToCards({ calendarId, apiKey }){
+async function renderGCalToCards({ calendarId, apiKey }) {
   const root = document.getElementById('scheduleList');
   if (!root) return;
-  try{
+  try {
     const items = await fetchGCalEvents({ calendarId, apiKey, maxResults: 20 });
     if (items.length === 0) {
       root.innerHTML = `<li class="card"><p>直近の予定はありません。</p></li>`;
@@ -229,36 +215,26 @@ async function renderGCalToCards({ calendarId, apiKey }){
         ${it.link ? `<a class="btn" href="${it.link}" target="_blank" rel="noopener">Googleカレンダーで開く</a>` : ''}
       </li>
     `).join('');
-  }catch(e){
+  } catch (e) {
     console.error(e);
     root.innerHTML = `<li class="card"><p class="muted">スケジュールを読み込めませんでした。</p></li>`;
   }
 }
 
-// ★あなたの値を入れて呼び出す（公開カレンダー前提）
 renderGCalToCards({
   calendarId: '20dba90368bbf1e0ab7f0df056f206d6d15e4c8711d9afb1a1b045ba3ed3b9c2@group.calendar.google.com',
   apiKey: 'AIzaSyB1_znRIwBQBfsUE82Eg7Ez1ovLEwm-fxQ'
 });
 
-// ===== Portal Entrance controller =====
-// ===== Portal Entrance Controller =====
+// ===== Portal Entrance (光の扉) =====
 (() => {
   const portal = document.getElementById('portal');
   if (!portal) return;
-
-  // OSの「動きを減らす」がONならスキップ
   const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   if (prefersReduced) { portal.remove(); return; }
-
   portal.classList.add('open');
-
-  // 扉が開ききったら削除（2.2秒後）
   setTimeout(() => {
     portal.classList.add('hide');
     setTimeout(() => portal.remove(), 700);
   }, 2200);
-})();
-
-
 })();
