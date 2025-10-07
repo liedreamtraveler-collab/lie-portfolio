@@ -226,15 +226,4 @@ renderGCalToCards({
   apiKey: 'AIzaSyB1_znRIwBQBfsUE82Eg7Ez1ovLEwm-fxQ'
 });
 
-// ===== Portal Entrance (光の扉) =====
-(() => {
-  const portal = document.getElementById('portal');
-  if (!portal) return;
-  const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if (prefersReduced) { portal.remove(); return; }
-  portal.classList.add('open');
-  setTimeout(() => {
-    portal.classList.add('hide');
-    setTimeout(() => portal.remove(), 700);
-  }, 2200);
 })();
