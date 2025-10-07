@@ -226,4 +226,27 @@ renderGCalToCards({
   apiKey: 'AIzaSyB1_znRIwBQBfsUE82Eg7Ez1ovLEwm-fxQ'
 });
 
+// Now Loading controller (2秒表示 + フェードアウト)
+(() => {
+  const MIN = 2000; // 最低表示時間: 2秒
+  const start = performance.now();
+  const overlay = document.getElementById('preload');
+  if (!overlay) return;
+  document.body.classList.add('no-scroll');
+
+  function hide(){
+    overlay.classList.add('hide');
+    document.body.classList.remove('no-scroll');
+    setTimeout(()=>overlay.remove(), 700); // フェード後に削除
+  }
+
+  // ページロード完了時に閉じる。ただし最低2秒は見せる
+  window.addEventListener('load', () => {
+    const dt = performance.now() - start;
+    setTimeout(hide, Math.max(0, MIN - dt));
+  });
+
+  // 万一止まっても5秒で強制解除
+  setTimeout(hide, 5000);
+
 })();
