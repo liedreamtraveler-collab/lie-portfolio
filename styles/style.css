@@ -223,3 +223,14 @@ body.no-scroll{ overflow:hidden; }
 
 @media (prefers-reduced-motion: reduce){ .preload *{animation:none!important;} }
 
+/* 横スクロール防止の最終バリア */
+html, body {
+  overflow-x: hidden;
+}
+
+.hero, .hero-inner, .hero-gradient, header, footer, section {
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+
