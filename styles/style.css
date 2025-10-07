@@ -69,9 +69,11 @@ a:hover{opacity:.9}
 }
 
 .hero {
-  position: relative;
-  overflow: hidden;
-  contain: paint;             /* 視覚効果をコンテインしてはみ出しを切る */
+  background-image: url('../assets/header-bg.jpg');
+  background-size: cover;       /* 全体にフィット */
+  background-position: center;  /* 中央寄せ */
+  background-repeat: no-repeat;
+  height: 600px;                /* 画像高さに合わせて調整 */
 }
 .hero-inner{text-align:center;padding:88px 20px;max-width:920px;margin-inline:auto}
 .hero-title{font-size:clamp(28px,5vw,56px);line-height:1.1;margin:0 0 12px}
