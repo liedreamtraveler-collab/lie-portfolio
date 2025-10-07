@@ -83,14 +83,13 @@ a:hover{opacity:.9}
 }
 
 /* ワインレッドの揺らめき（放射＋流れ） */
-.hero-gradient{
-  position:absolute;inset:-20%;z-index:-1;
-  background:
-    radial-gradient(60% 60% at 50% 50%, rgba(134,32,64,.35), transparent 60%),
-    radial-gradient(30% 30% at 80% 70%, rgba(208,169,0,.12), transparent 60%),
-    radial-gradient(40% 40% at 15% 25%, rgba(134,32,64,.22), transparent 60%);
-  filter: blur(42px);
-  animation: drift 18s ease-in-out infinite alternate;
+.hero-gradient {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%; /* ← 100vw を 100% に変更 */
+  max-width: 100%;
+  overflow-x: hidden;
 }
 
 /* 微細な金のきらめき（前景の点滅） */
