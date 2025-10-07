@@ -250,3 +250,5 @@ renderGCalToCards({
   setTimeout(hide, 5000);
 
 })();
+
+})();
